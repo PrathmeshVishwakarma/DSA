@@ -33,5 +33,6 @@ int main() {
     vector<int> vec = {3, 1, 2, 4};
     Solution soln;
     cout << soln.sumSubarrayMins(vec);
+    cout << "test";
     return 0;
 }
