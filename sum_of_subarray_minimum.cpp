@@ -25,7 +25,7 @@ class Solution {
 };
 */
 
-// Solution 2: O(n) time complexity, using next and previous smaller element
+// Solution 2: O(3n) time complexity, using next and previous smaller element
 class Solution {
   public:
     vector<int> previous_smaller_element(vector<int> arr) {
@@ -72,8 +72,8 @@ class Solution {
         for (int i = 0; i < n; i++) {
             long long left = i - pse[i];
             long long right = nse[i] - i;
-            cout << left << " " << right * left * arr[i] << " " << right
-                 << endl;
+            // cout << left << " " << right * left * arr[i] << " " << right
+            //      << endl;
             total = (total + (right * left * arr[i]) % mod) % mod;
         }
         // for (int i : nse)
