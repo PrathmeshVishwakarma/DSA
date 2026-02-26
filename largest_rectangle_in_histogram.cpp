@@ -54,47 +54,76 @@ using namespace std;
 //     }
 // };
 
-// Prototype 2: Calculating pse on the go, will cut time complexity from O(3n)
-// -> O(2n)
+// // Prototype 2: Calculating pse on the go, will cut time complexity from
+// O(3n)
+// // -> O(2n)
+// class Solution {
+//   public:
+//     vector<int> next_smaller_element(vector<int> nums) {
+//         int n = nums.size();
+//         stack<int> stk = {};
+//         vector<int> nse(n, n);
+//         for (int i = n - 1; i >= 0; i--) {
+//             while (!stk.empty() && nums[i] < nums[stk.top()]) {
+//                 stk.pop();
+//             }
+//             if (stk.empty()) {
+//                 nse[i] = n;
+//             } else {
+//                 nse[i] = stk.top();
+//             }
+//             stk.push(i);
+//         }
+//         return nse;
+//     }
+//     int largestRectangleArea(vector<int> &heights) {
+//         int n = heights.size();
+//         int maximum_area = INT_MIN;
+//         stack<int> stk = {};
+//         vector<int> nse = next_smaller_element(heights);
+//         for (int i = 0; i < n; i++) {
+//             int pse = -1;
+//             while (!stk.empty() && heights[i] <= heights[stk.top()]) {
+//                 stk.pop();
+//             }
+//             if (stk.empty()) {
+//                 pse = -1;
+//             } else {
+//                 pse = stk.top();
+//             }
+//             stk.push(i);
+//             int current_area = heights[i] * (((i - pse) + (nse[i] - i)) - 1);
+//             maximum_area = max(maximum_area, current_area);
+//         }
+//         return maximum_area;
+//     }
+// };
+
+// Strivers soln: time complexity: O(n)
 class Solution {
   public:
-    vector<int> next_smaller_element(vector<int> nums) {
-        int n = nums.size();
+    int largestRectangleArea(vector<int> &arr) {
         stack<int> stk = {};
-        vector<int> nse(n, n);
-        for (int i = n - 1; i >= 0; i--) {
-            while (!stk.empty() && nums[i] < nums[stk.top()]) {
-                stk.pop();
-            }
-            if (stk.empty()) {
-                nse[i] = n;
-            } else {
-                nse[i] = stk.top();
-            }
-            stk.push(i);
-        }
-        return nse;
-    }
-    int largestRectangleArea(vector<int> &heights) {
-        int n = heights.size();
-        int maximum_area = INT_MIN;
-        stack<int> stk = {};
-        vector<int> nse = next_smaller_element(heights);
+        int n = arr.size();
+        int max_area = 0;
         for (int i = 0; i < n; i++) {
-            int pse = -1;
-            while (!stk.empty() && heights[i] <= heights[stk.top()]) {
+            while (!stk.empty() && arr[stk.top()] > arr[i]) {
+                int element = stk.top();
                 stk.pop();
-            }
-            if (stk.empty()) {
-                pse = -1;
-            } else {
-                pse = stk.top();
+                int nse = i;
+                int pse = stk.empty() ? -1 : stk.top();
+                max_area = max(max_area, arr[element] * (nse - pse - 1));
             }
             stk.push(i);
-            int current_area = heights[i] * (((i - pse) + (nse[i] - i)) - 1);
-            maximum_area = max(maximum_area, current_area);
         }
-        return maximum_area;
+        while (!stk.empty()) {
+            int nse = n;
+            int element = stk.top();
+            stk.pop();
+            int pse = stk.empty() ? -1 : stk.top();
+            max_area = max(max_area, arr[element] * (nse - pse - 1));
+        }
+        return max_area;
     }
 };
 
